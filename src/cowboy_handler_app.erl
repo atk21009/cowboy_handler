@@ -15,11 +15,12 @@ start(_StartType, _StartArgs) ->
             {"/", default_page_h, []}
         ]}
     ]),
-    cowboy:start_clear(
-        my_http_listener,
-        [{port, 80}],
-        #{env => #{dispatch => Dispatch}}
-    ),
+    PrivDir = code:priv_dir(db_access),
+        {ok,_} = cowboy:start_tls(https_listener, [
+            {port, 443},
+            {certfile, PrivDir ++ "/ssl/fullchain.pem"},
+            {keyfile, PrivDir ++ "/ssl/privkey.pem"}
+                ], #{env => #{dispatch => Dispatch}}),
     cowboy_handler_sup:start_link().
 
 stop(_State) ->
