@@ -12,7 +12,12 @@
 start(_StartType, _StartArgs) ->
     Dispatch = cowboy_router:compile([
         {'_', [
-            {"/", default_page_h, []}
+            %% Hello World
+            {"/", index_handler, []},
+            %% Package Info
+            {"/package/[...]", package_handler, []},
+            %% Location Update
+            {"/location/[...]", location_handler, []}
         ]}
     ]),
     %% Define the paths to the certificate files
