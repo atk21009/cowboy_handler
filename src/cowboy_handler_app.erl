@@ -16,8 +16,8 @@ start(_StartType, _StartArgs) ->
         ]}
     ]),
     %% Define the paths to the certificate files
-    CertFile = "/ssl/fullchain.pem",
-    KeyFile = "/ssl/privkey.pem",
+    CertFile = "/home/taylor/cowboy/cowboy_handler/ssl/fullchain.pem",
+    KeyFile = "/home/taylor/cowboy/cowboy_handler/ssl/privkey.pem",
     %% Start the Cowboy HTTPS listener
     {ok, _} = cowboy:start_tls(https_listener, [
         {port, 443},
