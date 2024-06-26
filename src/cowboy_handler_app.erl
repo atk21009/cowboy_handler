@@ -15,12 +15,16 @@ start(_StartType, _StartArgs) ->
             {"/", default_page_h, []}
         ]}
     ]),
-    PrivDir = code:priv_dir(cowboy_handler),
-        {ok,_} = cowboy:start_tls(https_listener, [
-            {port, 443},
-            {certfile, PrivDir ++ "/ssl/fullchain.pem"},
-            {keyfile, PrivDir ++ "/ssl/privkey.pem"}
-                ], #{env => #{dispatch => Dispatch}}),
+    %% Define the paths to the certificate files
+    CertFile = "/ssl/fullchain.pem",
+    KeyFile = "/ssl/privkey.pem",
+    %% Start the Cowboy HTTPS listener
+    {ok, _} = cowboy:start_tls(https_listener, [
+        {port, 443},
+        {certfile, CertFile},
+        {keyfile, KeyFile}
+    ], #{env => #{dispatch => Dispatch}}),
+    %% Start the application supervisor
     cowboy_handler_sup:start_link().
 
 stop(_State) ->
