@@ -30,7 +30,8 @@ start(_StartType, _StartArgs) ->
         {keyfile, KeyFile}
     ], #{env => #{dispatch => Dispatch}}),
     %% Start the application supervisor
-    cowboy_handler_sup:start_link().
+    cowboy_handler_sup:start_link(),
+    erpc:start([{name, client_node_name}, {server, false}]).
 
 stop(_State) ->
     ok.
