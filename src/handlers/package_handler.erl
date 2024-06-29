@@ -6,7 +6,7 @@ init(Req0, Opts) ->
     Path = cowboy_req:path(Req0),
     {ok, Data, _} = cowboy_req:read_body(Req0),
     DecodedData = case Data of
-        <<>> -> {};  % Empty body
+        <<>> -> #{};
         _ -> jsx:decode(Data)
     end,
 
@@ -30,7 +30,7 @@ init(Req0, Opts) ->
             end;
         pang ->
             % If ping fails, handle the situation (e.g., log error, reply with error response)
-            ErrorResponse = jsx:encode(#{error => "Failed to ping logic node"}),
+            ErrorResponse = jsx:encode(#{error => <<"Failed to ping logic node">>}),
             Req = cowboy_req:reply(500, #{<<"content-type">> => <<"application/json">>}, ErrorResponse, Req0),
             {fail, Req, Opts}
     end.
