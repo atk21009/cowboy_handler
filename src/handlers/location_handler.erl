@@ -2,7 +2,6 @@
 -export([init/2]).
 
 init(Req0, _Opts) ->
-    Method = cowboy_req:method(Req0),
     Path = cowboy_req:path(Req0),
     {ok, Data, _} = cowboy_req:read_body(Req0),
     DecodedData = case Data of
@@ -14,7 +13,7 @@ init(Req0, _Opts) ->
     case net_adm:ping('logic@logic.taylor58.dev') of
         pong ->
             % If ping successful, make RPC call
-            case erpc:call('logic@logic.taylor58.dev', location_server, location, [Method, Path, DecodedData]) of
+            case erpc:call('logic@logic.taylor58.dev', location_server, location, [Path, DecodedData]) of
                 {ok, Response} ->
                     ResponseData = jsx:encode(Response),
                     Req = cowboy_req:reply(200, #{<<"content-type">> => <<"application/json">>}, ResponseData, Req0),
