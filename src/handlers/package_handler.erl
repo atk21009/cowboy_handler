@@ -12,7 +12,7 @@ init(Req0, Opts) ->
     end,
 
     % pass to server
-    Res = erpc:call('logic@logic.taylor58.dev', package_server, package, [Method, Path, DecodedData]),
+    Res = erpc:call('logic.taylor58.dev', package_server, package, [Method, Path, DecodedData]),
     case Res of 
         {ok, Response} ->
             % send response to user

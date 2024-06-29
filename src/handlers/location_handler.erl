@@ -12,7 +12,7 @@ init(Req0, Opts) ->
     end,
 
     % pass to server
-    RemoteNode = 'logic@logic.taylor58.dev',
+    RemoteNode = 'logic.taylor58.dev',
     Res = erpc:call(RemoteNode, location_server, location, [Method, Path, DecodedData]),
     case Res of 
         {ok, Response} ->
