@@ -14,6 +14,10 @@ init(Req0, Opts) ->
         pong ->
             % If ping successful, make RPC call
             case erpc:call('logic@logic.taylor58.dev', package_server, package, [Path, DecodedData]) of
+                {ok} ->
+                    %% If response is ok without data, reply with 200 OK and no body
+                    Req = cowboy_req:reply(200, #{<<"content-type">> => <<"application/json">>}, Req0),
+                    {ok, Req, Opts};
                 {ok, Response} ->
                     ResponseData = jsx:encode(Response),
                     Req = cowboy_req:reply(200, #{<<"content-type">> => <<"application/json">>}, ResponseData, Req0),
