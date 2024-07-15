@@ -13,7 +13,7 @@ start(_StartType, _StartArgs) ->
     Dispatch = cowboy_router:compile([
         {'_', [
             %% Hello World
-            {'/', index_handler, []},
+            {"/", index_handler, []},
             %% Package Info
             {"/[...]", package_handler, []}
         ]}
