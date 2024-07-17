@@ -4,9 +4,10 @@
 init(Req0, Opts) ->
     Path = cowboy_req:path(Req0),
     {ok, Data, _} = cowboy_req:read_body(Req0),
-    DecodedData = case Data of
-        <<>> -> #{};
-        _ -> jsx:decode(Data)
+    
+    DecodedData = case decode_json(Data) of
+        {ok, Json} -> Json;
+        error -> Data
     end,
 
     % Ping logic@logic.taylor58.dev to establish connection
@@ -36,4 +37,11 @@ init(Req0, Opts) ->
             ErrorResponse = jsx:encode(#{error => <<"Failed to ping logic node">>}),
             Req = cowboy_req:reply(500, #{<<"content-type">> => <<"application/json">>}, ErrorResponse, Req0),
             {fail, Req, Opts}
+    end.
+
+decode_json(Data) ->
+    try 
+        {ok, jsx:decode(Data)}
+    catch
+        _:_ -> error
     end.
